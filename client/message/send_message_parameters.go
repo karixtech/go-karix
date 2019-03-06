@@ -6,10 +6,9 @@ package message
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -27,7 +26,7 @@ func NewSendMessageParams() *SendMessageParams {
 		aPIVersionDefault = string("1.0")
 	)
 	return &SendMessageParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -40,7 +39,7 @@ func NewSendMessageParamsWithTimeout(timeout time.Duration) *SendMessageParams {
 		aPIVersionDefault = string("1.0")
 	)
 	return &SendMessageParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: timeout,
 	}
@@ -53,7 +52,7 @@ func NewSendMessageParamsWithContext(ctx context.Context) *SendMessageParams {
 		apiVersionDefault = string("1.0")
 	)
 	return &SendMessageParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 
 		Context: ctx,
 	}
@@ -66,7 +65,7 @@ func NewSendMessageParamsWithHTTPClient(client *http.Client) *SendMessageParams 
 		apiVersionDefault = string("1.0")
 	)
 	return &SendMessageParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		HTTPClient: client,
 	}
 }
@@ -80,7 +79,7 @@ type SendMessageParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*Message
 	  Create Message object
 
@@ -126,13 +125,13 @@ func (o *SendMessageParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAPIVersion adds the aPIVersion to the send message params
-func (o *SendMessageParams) WithAPIVersion(aPIVersion *string) *SendMessageParams {
+func (o *SendMessageParams) WithAPIVersion(aPIVersion string) *SendMessageParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the send message params
-func (o *SendMessageParams) SetAPIVersion(aPIVersion *string) {
+func (o *SendMessageParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -155,13 +154,9 @@ func (o *SendMessageParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	}
 	var res []error
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	if o.Message != nil {

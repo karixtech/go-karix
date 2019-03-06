@@ -9,7 +9,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -82,7 +85,7 @@ func NewPatchWebhookOK() *PatchWebhookOK {
 Webhook data
 */
 type PatchWebhookOK struct {
-	Payload *models.PatchWebhookOKBody
+	Payload *PatchWebhookOKBody
 }
 
 func (o *PatchWebhookOK) Error() string {
@@ -91,7 +94,7 @@ func (o *PatchWebhookOK) Error() string {
 
 func (o *PatchWebhookOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.PatchWebhookOKBody)
+	o.Payload = new(PatchWebhookOKBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -111,7 +114,7 @@ func NewPatchWebhookBadRequest() *PatchWebhookBadRequest {
 Error
 */
 type PatchWebhookBadRequest struct {
-	Payload *models.PatchWebhookBadRequestBody
+	Payload *PatchWebhookBadRequestBody
 }
 
 func (o *PatchWebhookBadRequest) Error() string {
@@ -120,7 +123,7 @@ func (o *PatchWebhookBadRequest) Error() string {
 
 func (o *PatchWebhookBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.PatchWebhookBadRequestBody)
+	o.Payload = new(PatchWebhookBadRequestBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -165,7 +168,7 @@ func NewPatchWebhookForbidden() *PatchWebhookForbidden {
 User not authorized or blocked
 */
 type PatchWebhookForbidden struct {
-	Payload *models.PatchWebhookForbiddenBody
+	Payload *PatchWebhookForbiddenBody
 }
 
 func (o *PatchWebhookForbidden) Error() string {
@@ -174,7 +177,7 @@ func (o *PatchWebhookForbidden) Error() string {
 
 func (o *PatchWebhookForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.PatchWebhookForbiddenBody)
+	o.Payload = new(PatchWebhookForbiddenBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -194,7 +197,7 @@ func NewPatchWebhookNotFound() *PatchWebhookNotFound {
 Resource not found
 */
 type PatchWebhookNotFound struct {
-	Payload *models.PatchWebhookNotFoundBody
+	Payload *PatchWebhookNotFoundBody
 }
 
 func (o *PatchWebhookNotFound) Error() string {
@@ -203,7 +206,7 @@ func (o *PatchWebhookNotFound) Error() string {
 
 func (o *PatchWebhookNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.PatchWebhookNotFoundBody)
+	o.Payload = new(PatchWebhookNotFoundBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -223,7 +226,7 @@ func NewPatchWebhookInternalServerError() *PatchWebhookInternalServerError {
 Error
 */
 type PatchWebhookInternalServerError struct {
-	Payload *models.PatchWebhookInternalServerErrorBody
+	Payload *PatchWebhookInternalServerErrorBody
 }
 
 func (o *PatchWebhookInternalServerError) Error() string {
@@ -232,12 +235,646 @@ func (o *PatchWebhookInternalServerError) Error() string {
 
 func (o *PatchWebhookInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.PatchWebhookInternalServerErrorBody)
+	o.Payload = new(PatchWebhookInternalServerErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 
+	return nil
+}
+
+/*PatchWebhookBadRequestBody ErrorResponse
+swagger:model PatchWebhookBadRequestBody
+*/
+type PatchWebhookBadRequestBody struct {
+
+	// error
+	Error *PatchWebhookBadRequestBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this patch webhook bad request body
+func (o *PatchWebhookBadRequestBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookBadRequestBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookBadRequest" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *PatchWebhookBadRequestBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookBadRequest" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookBadRequestBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookBadRequestBody) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookBadRequestBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookBadRequestBodyError patch webhook bad request body error
+swagger:model PatchWebhookBadRequestBodyError
+*/
+type PatchWebhookBadRequestBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this patch webhook bad request body error
+func (o *PatchWebhookBadRequestBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookBadRequestBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("patchWebhookBadRequest"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookBadRequestBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookBadRequestBodyError) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookBadRequestBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookForbiddenBody UnauthorizedResponse
+swagger:model PatchWebhookForbiddenBody
+*/
+type PatchWebhookForbiddenBody struct {
+
+	// error
+	Error *PatchWebhookForbiddenBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this patch webhook forbidden body
+func (o *PatchWebhookForbiddenBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookForbiddenBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookForbidden" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *PatchWebhookForbiddenBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookForbidden" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookForbiddenBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookForbiddenBody) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookForbiddenBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookForbiddenBodyError patch webhook forbidden body error
+swagger:model PatchWebhookForbiddenBodyError
+*/
+type PatchWebhookForbiddenBodyError struct {
+
+	// Forbidden Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this patch webhook forbidden body error
+func (o *PatchWebhookForbiddenBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookForbiddenBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("patchWebhookForbidden"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookForbiddenBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookForbiddenBodyError) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookForbiddenBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookInternalServerErrorBody ErrorResponse
+swagger:model PatchWebhookInternalServerErrorBody
+*/
+type PatchWebhookInternalServerErrorBody struct {
+
+	// error
+	Error *PatchWebhookInternalServerErrorBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this patch webhook internal server error body
+func (o *PatchWebhookInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookInternalServerErrorBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookInternalServerError" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *PatchWebhookInternalServerErrorBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookInternalServerError" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookInternalServerErrorBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookInternalServerErrorBody) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookInternalServerErrorBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookInternalServerErrorBodyError patch webhook internal server error body error
+swagger:model PatchWebhookInternalServerErrorBodyError
+*/
+type PatchWebhookInternalServerErrorBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this patch webhook internal server error body error
+func (o *PatchWebhookInternalServerErrorBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookInternalServerErrorBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("patchWebhookInternalServerError"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookInternalServerErrorBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookInternalServerErrorBodyError) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookInternalServerErrorBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookNotFoundBody NotFoundResponse
+swagger:model PatchWebhookNotFoundBody
+*/
+type PatchWebhookNotFoundBody struct {
+
+	// error
+	Error *PatchWebhookNotFoundBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this patch webhook not found body
+func (o *PatchWebhookNotFoundBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookNotFoundBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookNotFound" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *PatchWebhookNotFoundBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookNotFound" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookNotFoundBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookNotFoundBody) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookNotFoundBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookNotFoundBodyError patch webhook not found body error
+swagger:model PatchWebhookNotFoundBodyError
+*/
+type PatchWebhookNotFoundBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this patch webhook not found body error
+func (o *PatchWebhookNotFoundBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookNotFoundBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("patchWebhookNotFound"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookNotFoundBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookNotFoundBodyError) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookNotFoundBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*PatchWebhookOKBody WebhookResponse
+swagger:model PatchWebhookOKBody
+*/
+type PatchWebhookOKBody struct {
+
+	// data
+	Data *models.Webhook `json:"data,omitempty"`
+
+	// meta
+	Meta *models.ObjectMetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this patch webhook o k body
+func (o *PatchWebhookOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateData(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PatchWebhookOKBody) validateData(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Data) { // not required
+		return nil
+	}
+
+	if o.Data != nil {
+		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookOK" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *PatchWebhookOKBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("patchWebhookOK" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PatchWebhookOKBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PatchWebhookOKBody) UnmarshalBinary(b []byte) error {
+	var res PatchWebhookOKBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

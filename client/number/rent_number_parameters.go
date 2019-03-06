@@ -6,10 +6,9 @@ package number
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -27,7 +26,7 @@ func NewRentNumberParams() *RentNumberParams {
 		aPIVersionDefault = string("1.0")
 	)
 	return &RentNumberParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -40,7 +39,7 @@ func NewRentNumberParamsWithTimeout(timeout time.Duration) *RentNumberParams {
 		aPIVersionDefault = string("1.0")
 	)
 	return &RentNumberParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: timeout,
 	}
@@ -53,7 +52,7 @@ func NewRentNumberParamsWithContext(ctx context.Context) *RentNumberParams {
 		apiVersionDefault = string("1.0")
 	)
 	return &RentNumberParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 
 		Context: ctx,
 	}
@@ -66,7 +65,7 @@ func NewRentNumberParamsWithHTTPClient(client *http.Client) *RentNumberParams {
 		apiVersionDefault = string("1.0")
 	)
 	return &RentNumberParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		HTTPClient: client,
 	}
 }
@@ -80,7 +79,7 @@ type RentNumberParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*Number
 	  Rent Details object
 
@@ -126,13 +125,13 @@ func (o *RentNumberParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAPIVersion adds the aPIVersion to the rent number params
-func (o *RentNumberParams) WithAPIVersion(aPIVersion *string) *RentNumberParams {
+func (o *RentNumberParams) WithAPIVersion(aPIVersion string) *RentNumberParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the rent number params
-func (o *RentNumberParams) SetAPIVersion(aPIVersion *string) {
+func (o *RentNumberParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -155,13 +154,9 @@ func (o *RentNumberParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	}
 	var res []error
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	if o.Number != nil {

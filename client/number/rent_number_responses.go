@@ -9,7 +9,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -89,7 +92,7 @@ func NewRentNumberCreated() *RentNumberCreated {
 Number data
 */
 type RentNumberCreated struct {
-	Payload *models.RentNumberCreatedBody
+	Payload *RentNumberCreatedBody
 }
 
 func (o *RentNumberCreated) Error() string {
@@ -98,7 +101,7 @@ func (o *RentNumberCreated) Error() string {
 
 func (o *RentNumberCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RentNumberCreatedBody)
+	o.Payload = new(RentNumberCreatedBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -118,7 +121,7 @@ func NewRentNumberBadRequest() *RentNumberBadRequest {
 Error
 */
 type RentNumberBadRequest struct {
-	Payload *models.RentNumberBadRequestBody
+	Payload *RentNumberBadRequestBody
 }
 
 func (o *RentNumberBadRequest) Error() string {
@@ -127,7 +130,7 @@ func (o *RentNumberBadRequest) Error() string {
 
 func (o *RentNumberBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RentNumberBadRequestBody)
+	o.Payload = new(RentNumberBadRequestBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -172,7 +175,7 @@ func NewRentNumberPaymentRequired() *RentNumberPaymentRequired {
 Insufficient Balance Error
 */
 type RentNumberPaymentRequired struct {
-	Payload *models.RentNumberPaymentRequiredBody
+	Payload *RentNumberPaymentRequiredBody
 }
 
 func (o *RentNumberPaymentRequired) Error() string {
@@ -181,7 +184,7 @@ func (o *RentNumberPaymentRequired) Error() string {
 
 func (o *RentNumberPaymentRequired) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RentNumberPaymentRequiredBody)
+	o.Payload = new(RentNumberPaymentRequiredBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -201,7 +204,7 @@ func NewRentNumberForbidden() *RentNumberForbidden {
 User not authorized or blocked
 */
 type RentNumberForbidden struct {
-	Payload *models.RentNumberForbiddenBody
+	Payload *RentNumberForbiddenBody
 }
 
 func (o *RentNumberForbidden) Error() string {
@@ -210,7 +213,7 @@ func (o *RentNumberForbidden) Error() string {
 
 func (o *RentNumberForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RentNumberForbiddenBody)
+	o.Payload = new(RentNumberForbiddenBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -230,7 +233,7 @@ func NewRentNumberNotFound() *RentNumberNotFound {
 Resource not found
 */
 type RentNumberNotFound struct {
-	Payload *models.RentNumberNotFoundBody
+	Payload *RentNumberNotFoundBody
 }
 
 func (o *RentNumberNotFound) Error() string {
@@ -239,7 +242,7 @@ func (o *RentNumberNotFound) Error() string {
 
 func (o *RentNumberNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RentNumberNotFoundBody)
+	o.Payload = new(RentNumberNotFoundBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -259,7 +262,7 @@ func NewRentNumberInternalServerError() *RentNumberInternalServerError {
 Error
 */
 type RentNumberInternalServerError struct {
-	Payload *models.RentNumberInternalServerErrorBody
+	Payload *RentNumberInternalServerErrorBody
 }
 
 func (o *RentNumberInternalServerError) Error() string {
@@ -268,12 +271,781 @@ func (o *RentNumberInternalServerError) Error() string {
 
 func (o *RentNumberInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RentNumberInternalServerErrorBody)
+	o.Payload = new(RentNumberInternalServerErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 
+	return nil
+}
+
+/*RentNumberBadRequestBody ErrorResponse
+swagger:model RentNumberBadRequestBody
+*/
+type RentNumberBadRequestBody struct {
+
+	// error
+	Error *RentNumberBadRequestBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this rent number bad request body
+func (o *RentNumberBadRequestBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberBadRequestBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberBadRequest" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *RentNumberBadRequestBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberBadRequest" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberBadRequestBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberBadRequestBody) UnmarshalBinary(b []byte) error {
+	var res RentNumberBadRequestBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberBadRequestBodyError rent number bad request body error
+swagger:model RentNumberBadRequestBodyError
+*/
+type RentNumberBadRequestBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this rent number bad request body error
+func (o *RentNumberBadRequestBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberBadRequestBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("rentNumberBadRequest"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberBadRequestBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberBadRequestBodyError) UnmarshalBinary(b []byte) error {
+	var res RentNumberBadRequestBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberCreatedBody NumberRentedResponse
+swagger:model RentNumberCreatedBody
+*/
+type RentNumberCreatedBody struct {
+
+	// data
+	Data *models.AccountNumber `json:"data,omitempty"`
+
+	// meta
+	Meta *models.MetaResponseWithBalance `json:"meta,omitempty"`
+}
+
+// Validate validates this rent number created body
+func (o *RentNumberCreatedBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateData(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberCreatedBody) validateData(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Data) { // not required
+		return nil
+	}
+
+	if o.Data != nil {
+		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberCreated" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *RentNumberCreatedBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberCreated" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberCreatedBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberCreatedBody) UnmarshalBinary(b []byte) error {
+	var res RentNumberCreatedBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberForbiddenBody UnauthorizedResponse
+swagger:model RentNumberForbiddenBody
+*/
+type RentNumberForbiddenBody struct {
+
+	// error
+	Error *RentNumberForbiddenBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this rent number forbidden body
+func (o *RentNumberForbiddenBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberForbiddenBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberForbidden" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *RentNumberForbiddenBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberForbidden" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberForbiddenBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberForbiddenBody) UnmarshalBinary(b []byte) error {
+	var res RentNumberForbiddenBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberForbiddenBodyError rent number forbidden body error
+swagger:model RentNumberForbiddenBodyError
+*/
+type RentNumberForbiddenBodyError struct {
+
+	// Forbidden Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this rent number forbidden body error
+func (o *RentNumberForbiddenBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberForbiddenBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("rentNumberForbidden"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberForbiddenBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberForbiddenBodyError) UnmarshalBinary(b []byte) error {
+	var res RentNumberForbiddenBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberInternalServerErrorBody ErrorResponse
+swagger:model RentNumberInternalServerErrorBody
+*/
+type RentNumberInternalServerErrorBody struct {
+
+	// error
+	Error *RentNumberInternalServerErrorBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this rent number internal server error body
+func (o *RentNumberInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberInternalServerErrorBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberInternalServerError" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *RentNumberInternalServerErrorBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberInternalServerError" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberInternalServerErrorBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberInternalServerErrorBody) UnmarshalBinary(b []byte) error {
+	var res RentNumberInternalServerErrorBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberInternalServerErrorBodyError rent number internal server error body error
+swagger:model RentNumberInternalServerErrorBodyError
+*/
+type RentNumberInternalServerErrorBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this rent number internal server error body error
+func (o *RentNumberInternalServerErrorBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberInternalServerErrorBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("rentNumberInternalServerError"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberInternalServerErrorBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberInternalServerErrorBodyError) UnmarshalBinary(b []byte) error {
+	var res RentNumberInternalServerErrorBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberNotFoundBody NotFoundResponse
+swagger:model RentNumberNotFoundBody
+*/
+type RentNumberNotFoundBody struct {
+
+	// error
+	Error *RentNumberNotFoundBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this rent number not found body
+func (o *RentNumberNotFoundBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberNotFoundBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberNotFound" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *RentNumberNotFoundBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberNotFound" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberNotFoundBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberNotFoundBody) UnmarshalBinary(b []byte) error {
+	var res RentNumberNotFoundBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberNotFoundBodyError rent number not found body error
+swagger:model RentNumberNotFoundBodyError
+*/
+type RentNumberNotFoundBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this rent number not found body error
+func (o *RentNumberNotFoundBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberNotFoundBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("rentNumberNotFound"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberNotFoundBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberNotFoundBodyError) UnmarshalBinary(b []byte) error {
+	var res RentNumberNotFoundBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberPaymentRequiredBody InsufficientBalanceResponse
+swagger:model RentNumberPaymentRequiredBody
+*/
+type RentNumberPaymentRequiredBody struct {
+
+	// error
+	Error *RentNumberPaymentRequiredBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this rent number payment required body
+func (o *RentNumberPaymentRequiredBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberPaymentRequiredBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberPaymentRequired" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *RentNumberPaymentRequiredBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("rentNumberPaymentRequired" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberPaymentRequiredBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberPaymentRequiredBody) UnmarshalBinary(b []byte) error {
+	var res RentNumberPaymentRequiredBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*RentNumberPaymentRequiredBodyError rent number payment required body error
+swagger:model RentNumberPaymentRequiredBodyError
+*/
+type RentNumberPaymentRequiredBodyError struct {
+
+	// Insufficient Balance Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this rent number payment required body error
+func (o *RentNumberPaymentRequiredBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *RentNumberPaymentRequiredBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("rentNumberPaymentRequired"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *RentNumberPaymentRequiredBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *RentNumberPaymentRequiredBodyError) UnmarshalBinary(b []byte) error {
+	var res RentNumberPaymentRequiredBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

@@ -29,14 +29,14 @@ type CreateMessage struct {
 	// The HTTP method which be be used to send the notification.
 	// Defaults to POST if `notification_url` is specified.
 	//
+	// Enum: [GET POST]
 	NotificationMethod string `json:"notification_method,omitempty"`
 
 	// URL on which message status change notifications will be sent
 	NotificationURL string `json:"notification_url,omitempty"`
 
 	// Sender ID for the message which will be displayed to the receiver. It
-	// should specification E.164 with international calling codes but without
-	// the `+` in front.
+	// should specification E.164 with international calling codes.
 	//   - When sending a message to US/Canada, the Sender ID must be a number
 	//     which belongs to your Karix Subaccount (or main account).
 	//
@@ -45,6 +45,7 @@ type CreateMessage struct {
 
 	// text
 	// Required: true
+	// Min Length: 1
 	Text *string `json:"text"`
 }
 
@@ -53,22 +54,18 @@ func (m *CreateMessage) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateDestination(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateNotificationMethod(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateSource(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateText(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
@@ -152,6 +149,10 @@ func (m *CreateMessage) validateSource(formats strfmt.Registry) error {
 func (m *CreateMessage) validateText(formats strfmt.Registry) error {
 
 	if err := validate.Required("text", "body", m.Text); err != nil {
+		return err
+	}
+
+	if err := validate.MinLength("text", "body", string(*m.Text), 1); err != nil {
 		return err
 	}
 

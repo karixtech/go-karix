@@ -6,10 +6,9 @@ package webhook
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -28,7 +27,7 @@ func NewGetWebhookParams() *GetWebhookParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetWebhookParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -45,7 +44,7 @@ func NewGetWebhookParamsWithTimeout(timeout time.Duration) *GetWebhookParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetWebhookParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -62,7 +61,7 @@ func NewGetWebhookParamsWithContext(ctx context.Context) *GetWebhookParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetWebhookParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -79,7 +78,7 @@ func NewGetWebhookParamsWithHTTPClient(client *http.Client) *GetWebhookParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetWebhookParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 		HTTPClient: client,
@@ -95,7 +94,7 @@ type GetWebhookParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*Limit
 	  The numbers of items to return.
 
@@ -146,13 +145,13 @@ func (o *GetWebhookParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAPIVersion adds the aPIVersion to the get webhook params
-func (o *GetWebhookParams) WithAPIVersion(aPIVersion *string) *GetWebhookParams {
+func (o *GetWebhookParams) WithAPIVersion(aPIVersion string) *GetWebhookParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the get webhook params
-func (o *GetWebhookParams) SetAPIVersion(aPIVersion *string) {
+func (o *GetWebhookParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -186,13 +185,9 @@ func (o *GetWebhookParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	}
 	var res []error
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	if o.Limit != nil {

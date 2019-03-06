@@ -9,7 +9,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -75,7 +78,7 @@ func NewGetSubaccountByIDOK() *GetSubaccountByIDOK {
 A subaccount object
 */
 type GetSubaccountByIDOK struct {
-	Payload *models.GetSubaccountByIDOKBody
+	Payload *GetSubaccountByIDOKBody
 }
 
 func (o *GetSubaccountByIDOK) Error() string {
@@ -84,7 +87,7 @@ func (o *GetSubaccountByIDOK) Error() string {
 
 func (o *GetSubaccountByIDOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetSubaccountByIDOKBody)
+	o.Payload = new(GetSubaccountByIDOKBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -129,7 +132,7 @@ func NewGetSubaccountByIDForbidden() *GetSubaccountByIDForbidden {
 User not authorized or blocked
 */
 type GetSubaccountByIDForbidden struct {
-	Payload *models.GetSubaccountByIDForbiddenBody
+	Payload *GetSubaccountByIDForbiddenBody
 }
 
 func (o *GetSubaccountByIDForbidden) Error() string {
@@ -138,7 +141,7 @@ func (o *GetSubaccountByIDForbidden) Error() string {
 
 func (o *GetSubaccountByIDForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetSubaccountByIDForbiddenBody)
+	o.Payload = new(GetSubaccountByIDForbiddenBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -158,7 +161,7 @@ func NewGetSubaccountByIDNotFound() *GetSubaccountByIDNotFound {
 Resource not found
 */
 type GetSubaccountByIDNotFound struct {
-	Payload *models.GetSubaccountByIDNotFoundBody
+	Payload *GetSubaccountByIDNotFoundBody
 }
 
 func (o *GetSubaccountByIDNotFound) Error() string {
@@ -167,7 +170,7 @@ func (o *GetSubaccountByIDNotFound) Error() string {
 
 func (o *GetSubaccountByIDNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetSubaccountByIDNotFoundBody)
+	o.Payload = new(GetSubaccountByIDNotFoundBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -187,7 +190,7 @@ func NewGetSubaccountByIDInternalServerError() *GetSubaccountByIDInternalServerE
 Error
 */
 type GetSubaccountByIDInternalServerError struct {
-	Payload *models.GetSubaccountByIDInternalServerErrorBody
+	Payload *GetSubaccountByIDInternalServerErrorBody
 }
 
 func (o *GetSubaccountByIDInternalServerError) Error() string {
@@ -196,12 +199,506 @@ func (o *GetSubaccountByIDInternalServerError) Error() string {
 
 func (o *GetSubaccountByIDInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetSubaccountByIDInternalServerErrorBody)
+	o.Payload = new(GetSubaccountByIDInternalServerErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 
+	return nil
+}
+
+/*GetSubaccountByIDForbiddenBody UnauthorizedResponse
+swagger:model GetSubaccountByIDForbiddenBody
+*/
+type GetSubaccountByIDForbiddenBody struct {
+
+	// error
+	Error *GetSubaccountByIDForbiddenBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get subaccount by ID forbidden body
+func (o *GetSubaccountByIDForbiddenBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSubaccountByIDForbiddenBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdForbidden" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetSubaccountByIDForbiddenBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdForbidden" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetSubaccountByIDForbiddenBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetSubaccountByIDForbiddenBody) UnmarshalBinary(b []byte) error {
+	var res GetSubaccountByIDForbiddenBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetSubaccountByIDForbiddenBodyError get subaccount by ID forbidden body error
+swagger:model GetSubaccountByIDForbiddenBodyError
+*/
+type GetSubaccountByIDForbiddenBodyError struct {
+
+	// Forbidden Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this get subaccount by ID forbidden body error
+func (o *GetSubaccountByIDForbiddenBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSubaccountByIDForbiddenBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getSubaccountByIdForbidden"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetSubaccountByIDForbiddenBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetSubaccountByIDForbiddenBodyError) UnmarshalBinary(b []byte) error {
+	var res GetSubaccountByIDForbiddenBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetSubaccountByIDInternalServerErrorBody ErrorResponse
+swagger:model GetSubaccountByIDInternalServerErrorBody
+*/
+type GetSubaccountByIDInternalServerErrorBody struct {
+
+	// error
+	Error *GetSubaccountByIDInternalServerErrorBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get subaccount by ID internal server error body
+func (o *GetSubaccountByIDInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSubaccountByIDInternalServerErrorBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdInternalServerError" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetSubaccountByIDInternalServerErrorBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdInternalServerError" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetSubaccountByIDInternalServerErrorBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetSubaccountByIDInternalServerErrorBody) UnmarshalBinary(b []byte) error {
+	var res GetSubaccountByIDInternalServerErrorBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetSubaccountByIDInternalServerErrorBodyError get subaccount by ID internal server error body error
+swagger:model GetSubaccountByIDInternalServerErrorBodyError
+*/
+type GetSubaccountByIDInternalServerErrorBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this get subaccount by ID internal server error body error
+func (o *GetSubaccountByIDInternalServerErrorBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSubaccountByIDInternalServerErrorBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getSubaccountByIdInternalServerError"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetSubaccountByIDInternalServerErrorBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetSubaccountByIDInternalServerErrorBodyError) UnmarshalBinary(b []byte) error {
+	var res GetSubaccountByIDInternalServerErrorBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetSubaccountByIDNotFoundBody NotFoundResponse
+swagger:model GetSubaccountByIDNotFoundBody
+*/
+type GetSubaccountByIDNotFoundBody struct {
+
+	// error
+	Error *GetSubaccountByIDNotFoundBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get subaccount by ID not found body
+func (o *GetSubaccountByIDNotFoundBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSubaccountByIDNotFoundBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdNotFound" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetSubaccountByIDNotFoundBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdNotFound" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetSubaccountByIDNotFoundBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetSubaccountByIDNotFoundBody) UnmarshalBinary(b []byte) error {
+	var res GetSubaccountByIDNotFoundBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetSubaccountByIDNotFoundBodyError get subaccount by ID not found body error
+swagger:model GetSubaccountByIDNotFoundBodyError
+*/
+type GetSubaccountByIDNotFoundBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this get subaccount by ID not found body error
+func (o *GetSubaccountByIDNotFoundBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSubaccountByIDNotFoundBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getSubaccountByIdNotFound"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetSubaccountByIDNotFoundBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetSubaccountByIDNotFoundBodyError) UnmarshalBinary(b []byte) error {
+	var res GetSubaccountByIDNotFoundBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetSubaccountByIDOKBody AccountResponse
+swagger:model GetSubaccountByIDOKBody
+*/
+type GetSubaccountByIDOKBody struct {
+
+	// data
+	Data *models.Account `json:"data,omitempty"`
+
+	// meta
+	Meta *models.ObjectMetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get subaccount by ID o k body
+func (o *GetSubaccountByIDOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateData(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSubaccountByIDOKBody) validateData(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Data) { // not required
+		return nil
+	}
+
+	if o.Data != nil {
+		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdOK" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetSubaccountByIDOKBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSubaccountByIdOK" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetSubaccountByIDOKBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetSubaccountByIDOKBody) UnmarshalBinary(b []byte) error {
+	var res GetSubaccountByIDOKBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

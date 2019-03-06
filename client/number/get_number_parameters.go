@@ -6,10 +6,9 @@ package number
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -28,7 +27,7 @@ func NewGetNumberParams() *GetNumberParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetNumberParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -45,7 +44,7 @@ func NewGetNumberParamsWithTimeout(timeout time.Duration) *GetNumberParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetNumberParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -62,7 +61,7 @@ func NewGetNumberParamsWithContext(ctx context.Context) *GetNumberParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetNumberParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -79,7 +78,7 @@ func NewGetNumberParamsWithHTTPClient(client *http.Client) *GetNumberParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetNumberParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 		HTTPClient: client,
@@ -95,7 +94,7 @@ type GetNumberParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*Contains
 	  Filter by numbers which contain this value
 
@@ -161,13 +160,13 @@ func (o *GetNumberParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAPIVersion adds the aPIVersion to the get number params
-func (o *GetNumberParams) WithAPIVersion(aPIVersion *string) *GetNumberParams {
+func (o *GetNumberParams) WithAPIVersion(aPIVersion string) *GetNumberParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the get number params
-func (o *GetNumberParams) SetAPIVersion(aPIVersion *string) {
+func (o *GetNumberParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -234,13 +233,9 @@ func (o *GetNumberParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 	}
 	var res []error
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	if o.Contains != nil {

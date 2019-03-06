@@ -6,10 +6,9 @@ package accounts
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -27,7 +26,7 @@ func NewPatchSubaccountParams() *PatchSubaccountParams {
 		aPIVersionDefault = string("1.0")
 	)
 	return &PatchSubaccountParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -40,7 +39,7 @@ func NewPatchSubaccountParamsWithTimeout(timeout time.Duration) *PatchSubaccount
 		aPIVersionDefault = string("1.0")
 	)
 	return &PatchSubaccountParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: timeout,
 	}
@@ -53,7 +52,7 @@ func NewPatchSubaccountParamsWithContext(ctx context.Context) *PatchSubaccountPa
 		apiVersionDefault = string("1.0")
 	)
 	return &PatchSubaccountParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 
 		Context: ctx,
 	}
@@ -66,7 +65,7 @@ func NewPatchSubaccountParamsWithHTTPClient(client *http.Client) *PatchSubaccoun
 		apiVersionDefault = string("1.0")
 	)
 	return &PatchSubaccountParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		HTTPClient: client,
 	}
 }
@@ -80,7 +79,7 @@ type PatchSubaccountParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*Subaccount
 	  Subaccount object
 
@@ -131,13 +130,13 @@ func (o *PatchSubaccountParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAPIVersion adds the aPIVersion to the patch subaccount params
-func (o *PatchSubaccountParams) WithAPIVersion(aPIVersion *string) *PatchSubaccountParams {
+func (o *PatchSubaccountParams) WithAPIVersion(aPIVersion string) *PatchSubaccountParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the patch subaccount params
-func (o *PatchSubaccountParams) SetAPIVersion(aPIVersion *string) {
+func (o *PatchSubaccountParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -171,13 +170,9 @@ func (o *PatchSubaccountParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	}
 	var res []error
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	if o.Subaccount != nil {

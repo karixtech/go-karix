@@ -7,6 +7,7 @@ package models
 
 import (
 	strfmt "github.com/go-openapi/strfmt"
+	"github.com/shopspring/decimal"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
@@ -17,30 +18,42 @@ import (
 type MetaResponseWithBalance struct {
 	MetaResponse
 
-	MetaResponseWithBalanceAllOf1
+	// available credits
+	AvailableCredits decimal.Decimal `json:"available_credits,omitempty"`
+
+	// credits charged
+	CreditsCharged decimal.Decimal `json:"credits_charged,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *MetaResponseWithBalance) UnmarshalJSON(raw []byte) error {
-
+	// AO0
 	var aO0 MetaResponse
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
 		return err
 	}
 	m.MetaResponse = aO0
 
-	var aO1 MetaResponseWithBalanceAllOf1
-	if err := swag.ReadJSON(raw, &aO1); err != nil {
+	// AO1
+	var dataAO1 struct {
+		AvailableCredits decimal.Decimal `json:"available_credits,omitempty"`
+
+		CreditsCharged decimal.Decimal `json:"credits_charged,omitempty"`
+	}
+	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
 	}
-	m.MetaResponseWithBalanceAllOf1 = aO1
+
+	m.AvailableCredits = dataAO1.AvailableCredits
+
+	m.CreditsCharged = dataAO1.CreditsCharged
 
 	return nil
 }
 
 // MarshalJSON marshals this object to a JSON structure
 func (m MetaResponseWithBalance) MarshalJSON() ([]byte, error) {
-	var _parts [][]byte
+	_parts := make([][]byte, 0, 2)
 
 	aO0, err := swag.WriteJSON(m.MetaResponse)
 	if err != nil {
@@ -48,11 +61,21 @@ func (m MetaResponseWithBalance) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	aO1, err := swag.WriteJSON(m.MetaResponseWithBalanceAllOf1)
-	if err != nil {
-		return nil, err
+	var dataAO1 struct {
+		AvailableCredits decimal.Decimal `json:"available_credits,omitempty"`
+
+		CreditsCharged decimal.Decimal `json:"credits_charged,omitempty"`
 	}
-	_parts = append(_parts, aO1)
+
+	dataAO1.AvailableCredits = m.AvailableCredits
+
+	dataAO1.CreditsCharged = m.CreditsCharged
+
+	jsonDataAO1, errAO1 := swag.WriteJSON(dataAO1)
+	if errAO1 != nil {
+		return nil, errAO1
+	}
+	_parts = append(_parts, jsonDataAO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -61,11 +84,8 @@ func (m MetaResponseWithBalance) MarshalJSON() ([]byte, error) {
 func (m *MetaResponseWithBalance) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	// validation for a type composition with MetaResponse
 	if err := m.MetaResponse.Validate(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.MetaResponseWithBalanceAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // AccountNumber account number
@@ -17,30 +18,50 @@ import (
 type AccountNumber struct {
 	EditAccountNumber
 
-	AccountNumberAllOf1
+	// Unique ID of the account which rented this number
+	AccountUID string `json:"account_uid,omitempty"`
+
+	// Timestamp when this number was rented
+	// Format: date-time
+	DateRented strfmt.DateTime `json:"date_rented,omitempty"`
+
+	// number details
+	NumberDetails *PhoneNumber `json:"number_details,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *AccountNumber) UnmarshalJSON(raw []byte) error {
-
+	// AO0
 	var aO0 EditAccountNumber
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
 		return err
 	}
 	m.EditAccountNumber = aO0
 
-	var aO1 AccountNumberAllOf1
-	if err := swag.ReadJSON(raw, &aO1); err != nil {
+	// AO1
+	var dataAO1 struct {
+		AccountUID string `json:"account_uid,omitempty"`
+
+		DateRented strfmt.DateTime `json:"date_rented,omitempty"`
+
+		NumberDetails *PhoneNumber `json:"number_details,omitempty"`
+	}
+	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
 	}
-	m.AccountNumberAllOf1 = aO1
+
+	m.AccountUID = dataAO1.AccountUID
+
+	m.DateRented = dataAO1.DateRented
+
+	m.NumberDetails = dataAO1.NumberDetails
 
 	return nil
 }
 
 // MarshalJSON marshals this object to a JSON structure
 func (m AccountNumber) MarshalJSON() ([]byte, error) {
-	var _parts [][]byte
+	_parts := make([][]byte, 0, 2)
 
 	aO0, err := swag.WriteJSON(m.EditAccountNumber)
 	if err != nil {
@@ -48,11 +69,25 @@ func (m AccountNumber) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	aO1, err := swag.WriteJSON(m.AccountNumberAllOf1)
-	if err != nil {
-		return nil, err
+	var dataAO1 struct {
+		AccountUID string `json:"account_uid,omitempty"`
+
+		DateRented strfmt.DateTime `json:"date_rented,omitempty"`
+
+		NumberDetails *PhoneNumber `json:"number_details,omitempty"`
 	}
-	_parts = append(_parts, aO1)
+
+	dataAO1.AccountUID = m.AccountUID
+
+	dataAO1.DateRented = m.DateRented
+
+	dataAO1.NumberDetails = m.NumberDetails
+
+	jsonDataAO1, errAO1 := swag.WriteJSON(dataAO1)
+	if errAO1 != nil {
+		return nil, errAO1
+	}
+	_parts = append(_parts, jsonDataAO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -61,17 +96,53 @@ func (m AccountNumber) MarshalJSON() ([]byte, error) {
 func (m *AccountNumber) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	// validation for a type composition with EditAccountNumber
 	if err := m.EditAccountNumber.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.AccountNumberAllOf1.Validate(formats); err != nil {
+	if err := m.validateDateRented(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateNumberDetails(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *AccountNumber) validateDateRented(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.DateRented) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("date_rented", "body", "date-time", m.DateRented.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *AccountNumber) validateNumberDetails(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.NumberDetails) { // not required
+		return nil
+	}
+
+	if m.NumberDetails != nil {
+		if err := m.NumberDetails.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("number_details")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

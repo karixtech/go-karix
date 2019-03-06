@@ -7,6 +7,7 @@ package models
 
 import (
 	strfmt "github.com/go-openapi/strfmt"
+	"github.com/shopspring/decimal"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
@@ -37,17 +38,14 @@ func (m *PhoneNumber) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateRate(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateRegion(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateService(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
@@ -64,14 +62,12 @@ func (m *PhoneNumber) validateRate(formats strfmt.Registry) error {
 	}
 
 	if m.Rate != nil {
-
 		if err := m.Rate.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("rate")
 			}
 			return err
 		}
-
 	}
 
 	return nil
@@ -84,14 +80,12 @@ func (m *PhoneNumber) validateRegion(formats strfmt.Registry) error {
 	}
 
 	if m.Region != nil {
-
 		if err := m.Region.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("region")
 			}
 			return err
 		}
-
 	}
 
 	return nil
@@ -104,14 +98,12 @@ func (m *PhoneNumber) validateService(formats strfmt.Registry) error {
 	}
 
 	if m.Service != nil {
-
 		if err := m.Service.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("service")
 			}
 			return err
 		}
-
 	}
 
 	return nil
@@ -128,6 +120,107 @@ func (m *PhoneNumber) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *PhoneNumber) UnmarshalBinary(b []byte) error {
 	var res PhoneNumber
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// PhoneNumberRate phone number rate
+// swagger:model PhoneNumberRate
+type PhoneNumberRate struct {
+
+	// Rate per part of an incoming message
+	InboundSms decimal.NullDecimal `json:"inbound_sms,omitempty"`
+
+	// Monthly rental rate for this number.
+	// When the number is bought a prorated rental rate is deducted from balance
+	//
+	Rental decimal.Decimal `json:"rental,omitempty"`
+
+	// One time setup fees for this number
+	Setup decimal.Decimal `json:"setup,omitempty"`
+}
+
+// Validate validates this phone number rate
+func (m *PhoneNumberRate) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *PhoneNumberRate) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *PhoneNumberRate) UnmarshalBinary(b []byte) error {
+	var res PhoneNumberRate
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// PhoneNumberRegion Details about which region this number belongs to
+// swagger:model PhoneNumberRegion
+type PhoneNumberRegion struct {
+
+	// Country ISO of this number
+	Country string `json:"country,omitempty"`
+}
+
+// Validate validates this phone number region
+func (m *PhoneNumberRegion) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *PhoneNumberRegion) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *PhoneNumberRegion) UnmarshalBinary(b []byte) error {
+	var res PhoneNumberRegion
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// PhoneNumberService Services available on this number
+// swagger:model PhoneNumberService
+type PhoneNumberService struct {
+
+	// `true` if sms service is available on this number
+	Sms bool `json:"sms,omitempty"`
+}
+
+// Validate validates this phone number service
+func (m *PhoneNumberService) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *PhoneNumberService) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *PhoneNumberService) UnmarshalBinary(b []byte) error {
+	var res PhoneNumberService
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

@@ -6,10 +6,9 @@ package accounts
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -25,7 +24,7 @@ func NewGetSubaccountByIDParams() *GetSubaccountByIDParams {
 		aPIVersionDefault = string("1.0")
 	)
 	return &GetSubaccountByIDParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -38,7 +37,7 @@ func NewGetSubaccountByIDParamsWithTimeout(timeout time.Duration) *GetSubaccount
 		aPIVersionDefault = string("1.0")
 	)
 	return &GetSubaccountByIDParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: timeout,
 	}
@@ -51,7 +50,7 @@ func NewGetSubaccountByIDParamsWithContext(ctx context.Context) *GetSubaccountBy
 		apiVersionDefault = string("1.0")
 	)
 	return &GetSubaccountByIDParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 
 		Context: ctx,
 	}
@@ -64,7 +63,7 @@ func NewGetSubaccountByIDParamsWithHTTPClient(client *http.Client) *GetSubaccoun
 		apiVersionDefault = string("1.0")
 	)
 	return &GetSubaccountByIDParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		HTTPClient: client,
 	}
 }
@@ -78,7 +77,7 @@ type GetSubaccountByIDParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*UID
 	  Alphanumeric ID of the subaccount to get.
 
@@ -124,13 +123,13 @@ func (o *GetSubaccountByIDParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAPIVersion adds the aPIVersion to the get subaccount by Id params
-func (o *GetSubaccountByIDParams) WithAPIVersion(aPIVersion *string) *GetSubaccountByIDParams {
+func (o *GetSubaccountByIDParams) WithAPIVersion(aPIVersion string) *GetSubaccountByIDParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the get subaccount by Id params
-func (o *GetSubaccountByIDParams) SetAPIVersion(aPIVersion *string) {
+func (o *GetSubaccountByIDParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -153,13 +152,9 @@ func (o *GetSubaccountByIDParams) WriteToRequest(r runtime.ClientRequest, reg st
 	}
 	var res []error
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	// path param uid

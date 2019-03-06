@@ -17,30 +17,54 @@ import (
 type ArrayMetaResponse struct {
 	MetaResponse
 
-	ArrayMetaResponseAllOf1
+	// URL to fetch the next page of the object list
+	// - `null` if there is no next page
+	//
+	Next *string `json:"next,omitempty"`
+
+	// URL to fetch the previous page of the object list
+	// - `null` if there is no previous page
+	//
+	Previous *string `json:"previous,omitempty"`
+
+	// Total number of objects in all pages
+	//
+	Total int64 `json:"total,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *ArrayMetaResponse) UnmarshalJSON(raw []byte) error {
-
+	// AO0
 	var aO0 MetaResponse
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
 		return err
 	}
 	m.MetaResponse = aO0
 
-	var aO1 ArrayMetaResponseAllOf1
-	if err := swag.ReadJSON(raw, &aO1); err != nil {
+	// AO1
+	var dataAO1 struct {
+		Next *string `json:"next,omitempty"`
+
+		Previous *string `json:"previous,omitempty"`
+
+		Total int64 `json:"total,omitempty"`
+	}
+	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
 	}
-	m.ArrayMetaResponseAllOf1 = aO1
+
+	m.Next = dataAO1.Next
+
+	m.Previous = dataAO1.Previous
+
+	m.Total = dataAO1.Total
 
 	return nil
 }
 
 // MarshalJSON marshals this object to a JSON structure
 func (m ArrayMetaResponse) MarshalJSON() ([]byte, error) {
-	var _parts [][]byte
+	_parts := make([][]byte, 0, 2)
 
 	aO0, err := swag.WriteJSON(m.MetaResponse)
 	if err != nil {
@@ -48,11 +72,25 @@ func (m ArrayMetaResponse) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	aO1, err := swag.WriteJSON(m.ArrayMetaResponseAllOf1)
-	if err != nil {
-		return nil, err
+	var dataAO1 struct {
+		Next *string `json:"next,omitempty"`
+
+		Previous *string `json:"previous,omitempty"`
+
+		Total int64 `json:"total,omitempty"`
 	}
-	_parts = append(_parts, aO1)
+
+	dataAO1.Next = m.Next
+
+	dataAO1.Previous = m.Previous
+
+	dataAO1.Total = m.Total
+
+	jsonDataAO1, errAO1 := swag.WriteJSON(dataAO1)
+	if errAO1 != nil {
+		return nil, errAO1
+	}
+	_parts = append(_parts, jsonDataAO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -61,11 +99,8 @@ func (m ArrayMetaResponse) MarshalJSON() ([]byte, error) {
 func (m *ArrayMetaResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	// validation for a type composition with MetaResponse
 	if err := m.MetaResponse.Validate(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.ArrayMetaResponseAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

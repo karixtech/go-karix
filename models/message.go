@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 
 	strfmt "github.com/go-openapi/strfmt"
+	"github.com/shopspring/decimal"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
@@ -29,6 +30,7 @@ type Message struct {
 	// - inbound: Message was sent to a number owned by the karix account
 	// - outbound: Message was sent to a destination using karix account
 	//
+	// Enum: [inbound outbound]
 	Direction string `json:"direction,omitempty"`
 
 	// error
@@ -53,20 +55,22 @@ type Message struct {
 	Parts int64 `json:"parts,omitempty"`
 
 	// The timestamp when message was accepted and queued in Karix system
+	// Format: date-time
 	QueuedTime strfmt.DateTime `json:"queued_time,omitempty"`
 
 	// Cost per part of this message.
 	// Refer to [`text`](#/definitions/Message/properties/text)
 	//
-	Rate string `json:"rate,omitempty"`
+	Rate decimal.Decimal `json:"rate,omitempty"`
 
 	// In case we are unable to send the message to destination after queueing
 	// we will refund the `total_cost` you were charged.
 	// `null` if there was no refund.
 	//
-	Refund *string `json:"refund,omitempty"`
+	Refund decimal.NullDecimal `json:"refund,omitempty"`
 
 	// The timestamp when the message was processed and sent to destination
+	// Format: date-time
 	SentTime *strfmt.DateTime `json:"sent_time,omitempty"`
 
 	// Sender ID for the message
@@ -84,6 +88,7 @@ type Message struct {
 	// - `undelivered`: The `outbound` message falied to be delivered to its receiver.
 	// - `rejected`: The `outbound` message was rejected by the chosen carrier.
 	//
+	// Enum: [queued sent failed delivered undelivered rejected]
 	Status string `json:"status,omitempty"`
 
 	// Text of the message to be sent.
@@ -98,7 +103,7 @@ type Message struct {
 	// Total cost for this message including all parts.
 	// Refer to [`text`](#/definitions/Message/properties/text)
 	//
-	TotalCost string `json:"total_cost,omitempty"`
+	TotalCost decimal.Decimal `json:"total_cost,omitempty"`
 
 	// Unique ID for a message sent or received
 	UID string `json:"uid,omitempty"`
@@ -109,6 +114,7 @@ type Message struct {
 	// - If the current status is `undelivered` then this timestamp also represents
 	//   undelivered time
 	//
+	// Format: date-time
 	UpdatedTime *strfmt.DateTime `json:"updated_time,omitempty"`
 }
 
@@ -117,32 +123,26 @@ func (m *Message) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateDirection(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateError(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateQueuedTime(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateSentTime(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateStatus(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateUpdatedTime(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
@@ -202,14 +202,12 @@ func (m *Message) validateError(formats strfmt.Registry) error {
 	}
 
 	if m.Error != nil {
-
 		if err := m.Error.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("error")
 			}
 			return err
 		}
-
 	}
 
 	return nil
@@ -320,6 +318,42 @@ func (m *Message) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *Message) UnmarshalBinary(b []byte) error {
 	var res Message
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// MessageError In case of a failure to send a message this will tell you the
+// reason of the failure.
+//
+// swagger:model MessageError
+type MessageError struct {
+
+	// Error Code
+	Code string `json:"code,omitempty"`
+
+	// Error Message
+	Message string `json:"message,omitempty"`
+}
+
+// Validate validates this message error
+func (m *MessageError) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *MessageError) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *MessageError) UnmarshalBinary(b []byte) error {
+	var res MessageError
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

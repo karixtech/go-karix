@@ -106,7 +106,7 @@ Send a message to a list of destinations.
     rather than the Single Response format.
   - Once queued, the messages for your account are dequeued and processed at a
     rate set for your account (defaults to 5 messages per second).
-    Contact [sales](http://karix.io/messaging/contact-us/) to get your rate limit increased.
+    Contact [sales](support@karix.io) to get your rate limit increased.
   - For fair usage, there is no rate limiting for queueing messages using this
     API. Dequeue rate would still be applicable as stated.
 

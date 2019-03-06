@@ -25,25 +25,25 @@ type Client struct {
 }
 
 /*
-DeleteNumberNum unrents number from your account
+DeleteNumber unrents number from your account
 
 Unrent number from your account
 */
-func (a *Client) DeleteNumberNum(params *DeleteNumberNumParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteNumberNumNoContent, error) {
+func (a *Client) DeleteNumber(params *DeleteNumberParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteNumberNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewDeleteNumberNumParams()
+		params = NewDeleteNumberParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "DeleteNumberNum",
+		ID:                 "deleteNumber",
 		Method:             "DELETE",
 		PathPattern:        "/number/{num}/",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &DeleteNumberNumReader{formats: a.formats},
+		Reader:             &DeleteNumberReader{formats: a.formats},
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
@@ -51,69 +51,7 @@ func (a *Client) DeleteNumberNum(params *DeleteNumberNumParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	return result.(*DeleteNumberNumNoContent), nil
-
-}
-
-/*
-GetNumberNum gets details of a number
-
-Get details of a number
-*/
-func (a *Client) GetNumberNum(params *GetNumberNumParams, authInfo runtime.ClientAuthInfoWriter) (*GetNumberNumOK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewGetNumberNumParams()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "GetNumberNum",
-		Method:             "GET",
-		PathPattern:        "/number/{num}/",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &GetNumberNumReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return result.(*GetNumberNumOK), nil
-
-}
-
-/*
-PatchNumberNum edits phone number belonging to your account
-
-Edit phone number belonging to your account
-*/
-func (a *Client) PatchNumberNum(params *PatchNumberNumParams, authInfo runtime.ClientAuthInfoWriter) (*PatchNumberNumOK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewPatchNumberNumParams()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "PatchNumberNum",
-		Method:             "PATCH",
-		PathPattern:        "/number/{num}/",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &PatchNumberNumReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return result.(*PatchNumberNumOK), nil
+	return result.(*DeleteNumberNoContent), nil
 
 }
 
@@ -145,6 +83,68 @@ func (a *Client) GetNumber(params *GetNumberParams, authInfo runtime.ClientAuthI
 		return nil, err
 	}
 	return result.(*GetNumberOK), nil
+
+}
+
+/*
+GetNumberDetails gets details of a number
+
+Get details of a number
+*/
+func (a *Client) GetNumberDetails(params *GetNumberDetailsParams, authInfo runtime.ClientAuthInfoWriter) (*GetNumberDetailsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetNumberDetailsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getNumberDetails",
+		Method:             "GET",
+		PathPattern:        "/number/{num}/",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetNumberDetailsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetNumberDetailsOK), nil
+
+}
+
+/*
+PatchNumberDetails edits phone number belonging to your account
+
+Edit phone number belonging to your account
+*/
+func (a *Client) PatchNumberDetails(params *PatchNumberDetailsParams, authInfo runtime.ClientAuthInfoWriter) (*PatchNumberDetailsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchNumberDetailsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchNumberDetails",
+		Method:             "PATCH",
+		PathPattern:        "/number/{num}/",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchNumberDetailsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchNumberDetailsOK), nil
 
 }
 

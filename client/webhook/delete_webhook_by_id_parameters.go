@@ -6,10 +6,9 @@ package webhook
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -25,7 +24,7 @@ func NewDeleteWebhookByIDParams() *DeleteWebhookByIDParams {
 		aPIVersionDefault = string("1.0")
 	)
 	return &DeleteWebhookByIDParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -38,7 +37,7 @@ func NewDeleteWebhookByIDParamsWithTimeout(timeout time.Duration) *DeleteWebhook
 		aPIVersionDefault = string("1.0")
 	)
 	return &DeleteWebhookByIDParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 
 		timeout: timeout,
 	}
@@ -51,7 +50,7 @@ func NewDeleteWebhookByIDParamsWithContext(ctx context.Context) *DeleteWebhookBy
 		apiVersionDefault = string("1.0")
 	)
 	return &DeleteWebhookByIDParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 
 		Context: ctx,
 	}
@@ -64,7 +63,7 @@ func NewDeleteWebhookByIDParamsWithHTTPClient(client *http.Client) *DeleteWebhoo
 		apiVersionDefault = string("1.0")
 	)
 	return &DeleteWebhookByIDParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		HTTPClient: client,
 	}
 }
@@ -78,7 +77,7 @@ type DeleteWebhookByIDParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*UID
 	  Alphanumeric ID of the webhook to be deleted.
 
@@ -124,13 +123,13 @@ func (o *DeleteWebhookByIDParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAPIVersion adds the aPIVersion to the delete webhook by Id params
-func (o *DeleteWebhookByIDParams) WithAPIVersion(aPIVersion *string) *DeleteWebhookByIDParams {
+func (o *DeleteWebhookByIDParams) WithAPIVersion(aPIVersion string) *DeleteWebhookByIDParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the delete webhook by Id params
-func (o *DeleteWebhookByIDParams) SetAPIVersion(aPIVersion *string) {
+func (o *DeleteWebhookByIDParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -153,13 +152,9 @@ func (o *DeleteWebhookByIDParams) WriteToRequest(r runtime.ClientRequest, reg st
 	}
 	var res []error
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	// path param uid

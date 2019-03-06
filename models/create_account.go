@@ -35,6 +35,7 @@ type CreateAccount struct {
 	//   `suspended` and `disabled` accounts cannot use Karix API. They will receive
 	//   `403 Forbidden` response.
 	//
+	// Enum: [enabled suspended disabled]
 	Status *string `json:"status,omitempty"`
 }
 
@@ -43,12 +44,10 @@ func (m *CreateAccount) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateName(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateStatus(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 

@@ -25,25 +25,25 @@ type Client struct {
 }
 
 /*
-GetNumbersearch queries for phone numbers in our inventory
+SearchNumber queries for phone numbers in our inventory
 
 Query for phone numbers in our inventory
 */
-func (a *Client) GetNumbersearch(params *GetNumbersearchParams, authInfo runtime.ClientAuthInfoWriter) (*GetNumbersearchOK, error) {
+func (a *Client) SearchNumber(params *SearchNumberParams, authInfo runtime.ClientAuthInfoWriter) (*SearchNumberOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewGetNumbersearchParams()
+		params = NewSearchNumberParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "GetNumbersearch",
+		ID:                 "searchNumber",
 		Method:             "GET",
 		PathPattern:        "/numbersearch/",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &GetNumbersearchReader{formats: a.formats},
+		Reader:             &SearchNumberReader{formats: a.formats},
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
@@ -51,7 +51,7 @@ func (a *Client) GetNumbersearch(params *GetNumbersearchParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetNumbersearchOK), nil
+	return result.(*SearchNumberOK), nil
 
 }
 

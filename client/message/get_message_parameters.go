@@ -6,10 +6,9 @@ package message
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -28,7 +27,7 @@ func NewGetMessageParams() *GetMessageParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetMessageParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -45,7 +44,7 @@ func NewGetMessageParamsWithTimeout(timeout time.Duration) *GetMessageParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetMessageParams{
-		APIVersion: &aPIVersionDefault,
+		APIVersion: aPIVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -62,7 +61,7 @@ func NewGetMessageParamsWithContext(ctx context.Context) *GetMessageParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetMessageParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 
@@ -79,7 +78,7 @@ func NewGetMessageParamsWithHTTPClient(client *http.Client) *GetMessageParams {
 		offsetDefault     = int64(0)
 	)
 	return &GetMessageParams{
-		APIVersion: &apiVersionDefault,
+		APIVersion: apiVersionDefault,
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 		HTTPClient: client,
@@ -105,7 +104,7 @@ type GetMessageParams struct {
 	  API Version. If not specified your pinned verison is used.
 
 	*/
-	APIVersion *string
+	APIVersion string
 	/*Direction
 	  Message direction, inbound or outbound to filter on.
 	If not provided, the filter is not applied.
@@ -180,13 +179,13 @@ func (o *GetMessageParams) SetAccountUID(accountUID *string) {
 }
 
 // WithAPIVersion adds the aPIVersion to the get message params
-func (o *GetMessageParams) WithAPIVersion(aPIVersion *string) *GetMessageParams {
+func (o *GetMessageParams) WithAPIVersion(aPIVersion string) *GetMessageParams {
 	o.SetAPIVersion(aPIVersion)
 	return o
 }
 
 // SetAPIVersion adds the apiVersion to the get message params
-func (o *GetMessageParams) SetAPIVersion(aPIVersion *string) {
+func (o *GetMessageParams) SetAPIVersion(aPIVersion string) {
 	o.APIVersion = aPIVersion
 }
 
@@ -258,13 +257,9 @@ func (o *GetMessageParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 
 	}
 
-	if o.APIVersion != nil {
-
-		// header param api-version
-		if err := r.SetHeaderParam("api-version", *o.APIVersion); err != nil {
-			return err
-		}
-
+	// header param api-version
+	if err := r.SetHeaderParam("api-version", o.APIVersion); err != nil {
+		return err
 	}
 
 	if o.Direction != nil {

@@ -33,7 +33,6 @@ func (m *RentNumber) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateNumber(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 

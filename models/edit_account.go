@@ -32,6 +32,7 @@ type EditAccount struct {
 	//             to the subaccount like phonenumbers are also
 	//             deleted.
 	//
+	// Enum: [enabled suspended disabled]
 	Status string `json:"status,omitempty"`
 }
 
@@ -40,12 +41,10 @@ func (m *EditAccount) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateName(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateStatus(formats); err != nil {
-		// prop
 		res = append(res, err)
 	}
 

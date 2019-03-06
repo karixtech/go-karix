@@ -9,7 +9,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -75,7 +78,7 @@ func NewGetMessageByIDOK() *GetMessageByIDOK {
 Message data
 */
 type GetMessageByIDOK struct {
-	Payload *models.GetMessageByIDOKBody
+	Payload *GetMessageByIDOKBody
 }
 
 func (o *GetMessageByIDOK) Error() string {
@@ -84,7 +87,7 @@ func (o *GetMessageByIDOK) Error() string {
 
 func (o *GetMessageByIDOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetMessageByIDOKBody)
+	o.Payload = new(GetMessageByIDOKBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -129,7 +132,7 @@ func NewGetMessageByIDForbidden() *GetMessageByIDForbidden {
 User not authorized or blocked
 */
 type GetMessageByIDForbidden struct {
-	Payload *models.GetMessageByIDForbiddenBody
+	Payload *GetMessageByIDForbiddenBody
 }
 
 func (o *GetMessageByIDForbidden) Error() string {
@@ -138,7 +141,7 @@ func (o *GetMessageByIDForbidden) Error() string {
 
 func (o *GetMessageByIDForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetMessageByIDForbiddenBody)
+	o.Payload = new(GetMessageByIDForbiddenBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -158,7 +161,7 @@ func NewGetMessageByIDNotFound() *GetMessageByIDNotFound {
 Resource not found
 */
 type GetMessageByIDNotFound struct {
-	Payload *models.GetMessageByIDNotFoundBody
+	Payload *GetMessageByIDNotFoundBody
 }
 
 func (o *GetMessageByIDNotFound) Error() string {
@@ -167,7 +170,7 @@ func (o *GetMessageByIDNotFound) Error() string {
 
 func (o *GetMessageByIDNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetMessageByIDNotFoundBody)
+	o.Payload = new(GetMessageByIDNotFoundBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -187,7 +190,7 @@ func NewGetMessageByIDInternalServerError() *GetMessageByIDInternalServerError {
 Error
 */
 type GetMessageByIDInternalServerError struct {
-	Payload *models.GetMessageByIDInternalServerErrorBody
+	Payload *GetMessageByIDInternalServerErrorBody
 }
 
 func (o *GetMessageByIDInternalServerError) Error() string {
@@ -196,12 +199,506 @@ func (o *GetMessageByIDInternalServerError) Error() string {
 
 func (o *GetMessageByIDInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetMessageByIDInternalServerErrorBody)
+	o.Payload = new(GetMessageByIDInternalServerErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 
+	return nil
+}
+
+/*GetMessageByIDForbiddenBody UnauthorizedResponse
+swagger:model GetMessageByIDForbiddenBody
+*/
+type GetMessageByIDForbiddenBody struct {
+
+	// error
+	Error *GetMessageByIDForbiddenBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get message by ID forbidden body
+func (o *GetMessageByIDForbiddenBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageByIDForbiddenBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdForbidden" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetMessageByIDForbiddenBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdForbidden" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageByIDForbiddenBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageByIDForbiddenBody) UnmarshalBinary(b []byte) error {
+	var res GetMessageByIDForbiddenBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageByIDForbiddenBodyError get message by ID forbidden body error
+swagger:model GetMessageByIDForbiddenBodyError
+*/
+type GetMessageByIDForbiddenBodyError struct {
+
+	// Forbidden Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this get message by ID forbidden body error
+func (o *GetMessageByIDForbiddenBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageByIDForbiddenBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getMessageByIdForbidden"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageByIDForbiddenBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageByIDForbiddenBodyError) UnmarshalBinary(b []byte) error {
+	var res GetMessageByIDForbiddenBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageByIDInternalServerErrorBody ErrorResponse
+swagger:model GetMessageByIDInternalServerErrorBody
+*/
+type GetMessageByIDInternalServerErrorBody struct {
+
+	// error
+	Error *GetMessageByIDInternalServerErrorBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get message by ID internal server error body
+func (o *GetMessageByIDInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageByIDInternalServerErrorBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdInternalServerError" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetMessageByIDInternalServerErrorBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdInternalServerError" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageByIDInternalServerErrorBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageByIDInternalServerErrorBody) UnmarshalBinary(b []byte) error {
+	var res GetMessageByIDInternalServerErrorBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageByIDInternalServerErrorBodyError get message by ID internal server error body error
+swagger:model GetMessageByIDInternalServerErrorBodyError
+*/
+type GetMessageByIDInternalServerErrorBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this get message by ID internal server error body error
+func (o *GetMessageByIDInternalServerErrorBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageByIDInternalServerErrorBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getMessageByIdInternalServerError"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageByIDInternalServerErrorBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageByIDInternalServerErrorBodyError) UnmarshalBinary(b []byte) error {
+	var res GetMessageByIDInternalServerErrorBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageByIDNotFoundBody NotFoundResponse
+swagger:model GetMessageByIDNotFoundBody
+*/
+type GetMessageByIDNotFoundBody struct {
+
+	// error
+	Error *GetMessageByIDNotFoundBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get message by ID not found body
+func (o *GetMessageByIDNotFoundBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageByIDNotFoundBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdNotFound" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetMessageByIDNotFoundBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdNotFound" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageByIDNotFoundBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageByIDNotFoundBody) UnmarshalBinary(b []byte) error {
+	var res GetMessageByIDNotFoundBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageByIDNotFoundBodyError get message by ID not found body error
+swagger:model GetMessageByIDNotFoundBodyError
+*/
+type GetMessageByIDNotFoundBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this get message by ID not found body error
+func (o *GetMessageByIDNotFoundBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageByIDNotFoundBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getMessageByIdNotFound"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageByIDNotFoundBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageByIDNotFoundBodyError) UnmarshalBinary(b []byte) error {
+	var res GetMessageByIDNotFoundBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageByIDOKBody MessageResponse
+swagger:model GetMessageByIDOKBody
+*/
+type GetMessageByIDOKBody struct {
+
+	// data
+	Data *models.Message `json:"data,omitempty"`
+
+	// meta
+	Meta *models.ObjectMetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get message by ID o k body
+func (o *GetMessageByIDOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateData(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageByIDOKBody) validateData(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Data) { // not required
+		return nil
+	}
+
+	if o.Data != nil {
+		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdOK" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetMessageByIDOKBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageByIdOK" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageByIDOKBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageByIDOKBody) UnmarshalBinary(b []byte) error {
+	var res GetMessageByIDOKBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

@@ -20,7 +20,7 @@ type ObjectMetaResponse struct {
 
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *ObjectMetaResponse) UnmarshalJSON(raw []byte) error {
-
+	// AO0
 	var aO0 MetaResponse
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
 		return err
@@ -32,7 +32,7 @@ func (m *ObjectMetaResponse) UnmarshalJSON(raw []byte) error {
 
 // MarshalJSON marshals this object to a JSON structure
 func (m ObjectMetaResponse) MarshalJSON() ([]byte, error) {
-	var _parts [][]byte
+	_parts := make([][]byte, 0, 1)
 
 	aO0, err := swag.WriteJSON(m.MetaResponse)
 	if err != nil {
@@ -47,6 +47,7 @@ func (m ObjectMetaResponse) MarshalJSON() ([]byte, error) {
 func (m *ObjectMetaResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	// validation for a type composition with MetaResponse
 	if err := m.MetaResponse.Validate(formats); err != nil {
 		res = append(res, err)
 	}

@@ -8,8 +8,12 @@ package message
 import (
 	"fmt"
 	"io"
+	"strconv"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -68,7 +72,7 @@ func NewGetMessageOK() *GetMessageOK {
 A list of Message objects
 */
 type GetMessageOK struct {
-	Payload *models.GetMessageOKBody
+	Payload *GetMessageOKBody
 }
 
 func (o *GetMessageOK) Error() string {
@@ -77,7 +81,7 @@ func (o *GetMessageOK) Error() string {
 
 func (o *GetMessageOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetMessageOKBody)
+	o.Payload = new(GetMessageOKBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -122,7 +126,7 @@ func NewGetMessageForbidden() *GetMessageForbidden {
 User not authorized or blocked
 */
 type GetMessageForbidden struct {
-	Payload *models.GetMessageForbiddenBody
+	Payload *GetMessageForbiddenBody
 }
 
 func (o *GetMessageForbidden) Error() string {
@@ -131,7 +135,7 @@ func (o *GetMessageForbidden) Error() string {
 
 func (o *GetMessageForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetMessageForbiddenBody)
+	o.Payload = new(GetMessageForbiddenBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -151,7 +155,7 @@ func NewGetMessageInternalServerError() *GetMessageInternalServerError {
 Error
 */
 type GetMessageInternalServerError struct {
-	Payload *models.GetMessageInternalServerErrorBody
+	Payload *GetMessageInternalServerErrorBody
 }
 
 func (o *GetMessageInternalServerError) Error() string {
@@ -160,12 +164,378 @@ func (o *GetMessageInternalServerError) Error() string {
 
 func (o *GetMessageInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GetMessageInternalServerErrorBody)
+	o.Payload = new(GetMessageInternalServerErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 
+	return nil
+}
+
+/*GetMessageForbiddenBody UnauthorizedResponse
+swagger:model GetMessageForbiddenBody
+*/
+type GetMessageForbiddenBody struct {
+
+	// error
+	Error *GetMessageForbiddenBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get message forbidden body
+func (o *GetMessageForbiddenBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageForbiddenBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageForbidden" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetMessageForbiddenBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageForbidden" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageForbiddenBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageForbiddenBody) UnmarshalBinary(b []byte) error {
+	var res GetMessageForbiddenBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageForbiddenBodyError get message forbidden body error
+swagger:model GetMessageForbiddenBodyError
+*/
+type GetMessageForbiddenBodyError struct {
+
+	// Forbidden Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this get message forbidden body error
+func (o *GetMessageForbiddenBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageForbiddenBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getMessageForbidden"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageForbiddenBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageForbiddenBodyError) UnmarshalBinary(b []byte) error {
+	var res GetMessageForbiddenBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageInternalServerErrorBody ErrorResponse
+swagger:model GetMessageInternalServerErrorBody
+*/
+type GetMessageInternalServerErrorBody struct {
+
+	// error
+	Error *GetMessageInternalServerErrorBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this get message internal server error body
+func (o *GetMessageInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageInternalServerErrorBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageInternalServerError" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetMessageInternalServerErrorBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageInternalServerError" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageInternalServerErrorBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageInternalServerErrorBody) UnmarshalBinary(b []byte) error {
+	var res GetMessageInternalServerErrorBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageInternalServerErrorBodyError get message internal server error body error
+swagger:model GetMessageInternalServerErrorBodyError
+*/
+type GetMessageInternalServerErrorBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this get message internal server error body error
+func (o *GetMessageInternalServerErrorBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageInternalServerErrorBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("getMessageInternalServerError"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageInternalServerErrorBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageInternalServerErrorBodyError) UnmarshalBinary(b []byte) error {
+	var res GetMessageInternalServerErrorBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*GetMessageOKBody MessageListResponse
+swagger:model GetMessageOKBody
+*/
+type GetMessageOKBody struct {
+
+	// meta
+	Meta *models.ArrayMetaResponse `json:"meta,omitempty"`
+
+	// objects
+	Objects []*models.Message `json:"objects"`
+}
+
+// Validate validates this get message o k body
+func (o *GetMessageOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateObjects(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetMessageOKBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getMessageOK" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *GetMessageOKBody) validateObjects(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Objects) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(o.Objects); i++ {
+		if swag.IsZero(o.Objects[i]) { // not required
+			continue
+		}
+
+		if o.Objects[i] != nil {
+			if err := o.Objects[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("getMessageOK" + "." + "objects" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetMessageOKBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetMessageOKBody) UnmarshalBinary(b []byte) error {
+	var res GetMessageOKBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

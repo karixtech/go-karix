@@ -9,7 +9,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -75,7 +78,7 @@ func NewCreateSubaccountCreated() *CreateSubaccountCreated {
 A subaccount object
 */
 type CreateSubaccountCreated struct {
-	Payload *models.CreateSubaccountCreatedBody
+	Payload *CreateSubaccountCreatedBody
 }
 
 func (o *CreateSubaccountCreated) Error() string {
@@ -84,7 +87,7 @@ func (o *CreateSubaccountCreated) Error() string {
 
 func (o *CreateSubaccountCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.CreateSubaccountCreatedBody)
+	o.Payload = new(CreateSubaccountCreatedBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -104,7 +107,7 @@ func NewCreateSubaccountBadRequest() *CreateSubaccountBadRequest {
 Error
 */
 type CreateSubaccountBadRequest struct {
-	Payload *models.CreateSubaccountBadRequestBody
+	Payload *CreateSubaccountBadRequestBody
 }
 
 func (o *CreateSubaccountBadRequest) Error() string {
@@ -113,7 +116,7 @@ func (o *CreateSubaccountBadRequest) Error() string {
 
 func (o *CreateSubaccountBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.CreateSubaccountBadRequestBody)
+	o.Payload = new(CreateSubaccountBadRequestBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -158,7 +161,7 @@ func NewCreateSubaccountForbidden() *CreateSubaccountForbidden {
 User not authorized or blocked
 */
 type CreateSubaccountForbidden struct {
-	Payload *models.CreateSubaccountForbiddenBody
+	Payload *CreateSubaccountForbiddenBody
 }
 
 func (o *CreateSubaccountForbidden) Error() string {
@@ -167,7 +170,7 @@ func (o *CreateSubaccountForbidden) Error() string {
 
 func (o *CreateSubaccountForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.CreateSubaccountForbiddenBody)
+	o.Payload = new(CreateSubaccountForbiddenBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -187,7 +190,7 @@ func NewCreateSubaccountInternalServerError() *CreateSubaccountInternalServerErr
 Error
 */
 type CreateSubaccountInternalServerError struct {
-	Payload *models.CreateSubaccountInternalServerErrorBody
+	Payload *CreateSubaccountInternalServerErrorBody
 }
 
 func (o *CreateSubaccountInternalServerError) Error() string {
@@ -196,12 +199,511 @@ func (o *CreateSubaccountInternalServerError) Error() string {
 
 func (o *CreateSubaccountInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.CreateSubaccountInternalServerErrorBody)
+	o.Payload = new(CreateSubaccountInternalServerErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 
+	return nil
+}
+
+/*CreateSubaccountBadRequestBody ErrorResponse
+swagger:model CreateSubaccountBadRequestBody
+*/
+type CreateSubaccountBadRequestBody struct {
+
+	// error
+	Error *CreateSubaccountBadRequestBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this create subaccount bad request body
+func (o *CreateSubaccountBadRequestBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateSubaccountBadRequestBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountBadRequest" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *CreateSubaccountBadRequestBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountBadRequest" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateSubaccountBadRequestBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateSubaccountBadRequestBody) UnmarshalBinary(b []byte) error {
+	var res CreateSubaccountBadRequestBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*CreateSubaccountBadRequestBodyError create subaccount bad request body error
+swagger:model CreateSubaccountBadRequestBodyError
+*/
+type CreateSubaccountBadRequestBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this create subaccount bad request body error
+func (o *CreateSubaccountBadRequestBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateSubaccountBadRequestBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("createSubaccountBadRequest"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateSubaccountBadRequestBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateSubaccountBadRequestBodyError) UnmarshalBinary(b []byte) error {
+	var res CreateSubaccountBadRequestBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*CreateSubaccountCreatedBody AccountResponse
+swagger:model CreateSubaccountCreatedBody
+*/
+type CreateSubaccountCreatedBody struct {
+
+	// data
+	Data *models.Account `json:"data,omitempty"`
+
+	// meta
+	Meta *models.ObjectMetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this create subaccount created body
+func (o *CreateSubaccountCreatedBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateData(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateSubaccountCreatedBody) validateData(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Data) { // not required
+		return nil
+	}
+
+	if o.Data != nil {
+		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountCreated" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *CreateSubaccountCreatedBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountCreated" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateSubaccountCreatedBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateSubaccountCreatedBody) UnmarshalBinary(b []byte) error {
+	var res CreateSubaccountCreatedBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*CreateSubaccountForbiddenBody UnauthorizedResponse
+swagger:model CreateSubaccountForbiddenBody
+*/
+type CreateSubaccountForbiddenBody struct {
+
+	// error
+	Error *CreateSubaccountForbiddenBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this create subaccount forbidden body
+func (o *CreateSubaccountForbiddenBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateSubaccountForbiddenBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountForbidden" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *CreateSubaccountForbiddenBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountForbidden" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateSubaccountForbiddenBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateSubaccountForbiddenBody) UnmarshalBinary(b []byte) error {
+	var res CreateSubaccountForbiddenBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*CreateSubaccountForbiddenBodyError create subaccount forbidden body error
+swagger:model CreateSubaccountForbiddenBodyError
+*/
+type CreateSubaccountForbiddenBodyError struct {
+
+	// Forbidden Message
+	// Required: true
+	Message *string `json:"message"`
+}
+
+// Validate validates this create subaccount forbidden body error
+func (o *CreateSubaccountForbiddenBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateSubaccountForbiddenBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("createSubaccountForbidden"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateSubaccountForbiddenBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateSubaccountForbiddenBodyError) UnmarshalBinary(b []byte) error {
+	var res CreateSubaccountForbiddenBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*CreateSubaccountInternalServerErrorBody ErrorResponse
+swagger:model CreateSubaccountInternalServerErrorBody
+*/
+type CreateSubaccountInternalServerErrorBody struct {
+
+	// error
+	Error *CreateSubaccountInternalServerErrorBodyError `json:"error,omitempty"`
+
+	// meta
+	Meta *models.MetaResponse `json:"meta,omitempty"`
+}
+
+// Validate validates this create subaccount internal server error body
+func (o *CreateSubaccountInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateError(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMeta(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateSubaccountInternalServerErrorBody) validateError(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Error) { // not required
+		return nil
+	}
+
+	if o.Error != nil {
+		if err := o.Error.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountInternalServerError" + "." + "error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (o *CreateSubaccountInternalServerErrorBody) validateMeta(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Meta) { // not required
+		return nil
+	}
+
+	if o.Meta != nil {
+		if err := o.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("createSubaccountInternalServerError" + "." + "meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateSubaccountInternalServerErrorBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateSubaccountInternalServerErrorBody) UnmarshalBinary(b []byte) error {
+	var res CreateSubaccountInternalServerErrorBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+/*CreateSubaccountInternalServerErrorBodyError create subaccount internal server error body error
+swagger:model CreateSubaccountInternalServerErrorBodyError
+*/
+type CreateSubaccountInternalServerErrorBodyError struct {
+
+	// Error Message
+	// Required: true
+	Message *string `json:"message"`
+
+	// Parameter the error message is related to
+	// `null` is the error is generic
+	//
+	Param *string `json:"param,omitempty"`
+}
+
+// Validate validates this create subaccount internal server error body error
+func (o *CreateSubaccountInternalServerErrorBodyError) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateSubaccountInternalServerErrorBodyError) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.Required("createSubaccountInternalServerError"+"."+"error"+"."+"message", "body", o.Message); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateSubaccountInternalServerErrorBodyError) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateSubaccountInternalServerErrorBodyError) UnmarshalBinary(b []byte) error {
+	var res CreateSubaccountInternalServerErrorBodyError
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

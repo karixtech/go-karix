@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // Webhook webhook
@@ -17,30 +18,58 @@ import (
 type Webhook struct {
 	EditWebhook
 
-	WebhookAllOf1
+	// UID of Account which created this webhook
+	AccountUID string `json:"account_uid,omitempty"`
+
+	// Date when this webhook was created
+	// Format: date-time
+	CreatedTime strfmt.DateTime `json:"created_time,omitempty"`
+
+	// Unique ID of the webhook
+	UID string `json:"uid,omitempty"`
+
+	// Date when this webhook was last updated
+	// Format: date-time
+	UpdatedTime *strfmt.DateTime `json:"updated_time,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *Webhook) UnmarshalJSON(raw []byte) error {
-
+	// AO0
 	var aO0 EditWebhook
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
 		return err
 	}
 	m.EditWebhook = aO0
 
-	var aO1 WebhookAllOf1
-	if err := swag.ReadJSON(raw, &aO1); err != nil {
+	// AO1
+	var dataAO1 struct {
+		AccountUID string `json:"account_uid,omitempty"`
+
+		CreatedTime strfmt.DateTime `json:"created_time,omitempty"`
+
+		UID string `json:"uid,omitempty"`
+
+		UpdatedTime *strfmt.DateTime `json:"updated_time,omitempty"`
+	}
+	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
 	}
-	m.WebhookAllOf1 = aO1
+
+	m.AccountUID = dataAO1.AccountUID
+
+	m.CreatedTime = dataAO1.CreatedTime
+
+	m.UID = dataAO1.UID
+
+	m.UpdatedTime = dataAO1.UpdatedTime
 
 	return nil
 }
 
 // MarshalJSON marshals this object to a JSON structure
 func (m Webhook) MarshalJSON() ([]byte, error) {
-	var _parts [][]byte
+	_parts := make([][]byte, 0, 2)
 
 	aO0, err := swag.WriteJSON(m.EditWebhook)
 	if err != nil {
@@ -48,11 +77,29 @@ func (m Webhook) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	aO1, err := swag.WriteJSON(m.WebhookAllOf1)
-	if err != nil {
-		return nil, err
+	var dataAO1 struct {
+		AccountUID string `json:"account_uid,omitempty"`
+
+		CreatedTime strfmt.DateTime `json:"created_time,omitempty"`
+
+		UID string `json:"uid,omitempty"`
+
+		UpdatedTime *strfmt.DateTime `json:"updated_time,omitempty"`
 	}
-	_parts = append(_parts, aO1)
+
+	dataAO1.AccountUID = m.AccountUID
+
+	dataAO1.CreatedTime = m.CreatedTime
+
+	dataAO1.UID = m.UID
+
+	dataAO1.UpdatedTime = m.UpdatedTime
+
+	jsonDataAO1, errAO1 := swag.WriteJSON(dataAO1)
+	if errAO1 != nil {
+		return nil, errAO1
+	}
+	_parts = append(_parts, jsonDataAO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -61,17 +108,48 @@ func (m Webhook) MarshalJSON() ([]byte, error) {
 func (m *Webhook) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	// validation for a type composition with EditWebhook
 	if err := m.EditWebhook.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.WebhookAllOf1.Validate(formats); err != nil {
+	if err := m.validateCreatedTime(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateUpdatedTime(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *Webhook) validateCreatedTime(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.CreatedTime) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("created_time", "body", "date-time", m.CreatedTime.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Webhook) validateUpdatedTime(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.UpdatedTime) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("updated_time", "body", "date-time", m.UpdatedTime.String(), formats); err != nil {
+		return err
+	}
+
 	return nil
 }
 
